@@ -17,6 +17,7 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ public class LocationActivity extends Activity {
 	TextView tvHello;
 	TextView tvLog;
 	TextView tvState;
+	TextView tvState2;
 	SharedPreferences sPref;
 	Button daButton;
 	Button changeButton;
@@ -40,10 +42,13 @@ public class LocationActivity extends Activity {
 	Button settingsButtonSaveSettings;
 	Button settingsButtonSettingsResetFields;
 
+	Handler handler = new Handler();
+
 	LocationState locState;
 	int daPointNetId;
 	int initialWiFiState;
 	private String resp;
+	private String resp2;
 	String curSSID;
 	String curBSSID;
 	int curRSSI;
@@ -69,6 +74,7 @@ public class LocationActivity extends Activity {
 		tvHello.setText("Hello, " + loginName);
 		tvLog = (TextView) findViewById(R.id.textViewWIFILog);
 		tvState = (TextView) findViewById(R.id.textViewState);
+		tvState2 = (TextView) findViewById(R.id.textViewState2);
 		daButton = (Button) findViewById(R.id.buttonDa);
 		changeButton = (Button) findViewById(R.id.buttonChangeState);
 
@@ -89,7 +95,8 @@ public class LocationActivity extends Activity {
 			}
 		});
 
-		checkStateFreq = 1000;
+		checkStateFreq = 2000;
+		resp2 = "n/a";
 
 		settingsUpdate();
 
@@ -132,6 +139,7 @@ public class LocationActivity extends Activity {
 			}
 		};
 		beaconSender.start();
+
 		stateChecker = new Thread() {
 			@Override
 			public void run() {
@@ -140,6 +148,11 @@ public class LocationActivity extends Activity {
 						Thread.sleep(checkStateFreq);
 						echo("check state");
 						sendRequest("state?mac=" + myMAC);
+						handler.post(new Runnable(){
+							public void run() {
+								tvState2.setText(resp2);
+							}
+						});
 					}
 				} catch (InterruptedException e) {
 					// do nothing
@@ -207,6 +220,10 @@ public class LocationActivity extends Activity {
 				resp = EntityUtils.toString(r.getEntity(), "UTF-8");
 				//resp = r.toString();
 				echo("got response: " + resp);
+				if (url.startsWith("http://" + routerIP + "/state")) {
+					resp2 = resp;
+					//tvState2.setText(resp);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

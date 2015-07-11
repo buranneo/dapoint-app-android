@@ -827,7 +827,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f0b0001;
         public static final int action_menu_presenter=0x7f0b0002;
         public static final int action_mode_close_button=0x7f0b0024;
-        public static final int action_settings=0x7f0b004d;
+        public static final int action_settings=0x7f0b004e;
         public static final int activity_chooser_view_content=0x7f0b0025;
         public static final int always=0x7f0b0013;
         public static final int beginning=0x7f0b000f;
@@ -835,7 +835,7 @@ containing a value of this type.
         public static final int buttonChangeState=0x7f0b0040;
         public static final int buttonConnect=0x7f0b0042;
         public static final int buttonDa=0x7f0b003c;
-        public static final int buttonLogin=0x7f0b004c;
+        public static final int buttonLogin=0x7f0b004d;
         public static final int buttonSaveSettings=0x7f0b0049;
         public static final int buttonSettingsResetFields=0x7f0b0046;
         public static final int checkbox=0x7f0b002d;
@@ -845,8 +845,8 @@ containing a value of this type.
         public static final int disableHome=0x7f0b0009;
         public static final int dropdown=0x7f0b0019;
         public static final int editTextBeaconFreq=0x7f0b0045;
-        public static final int editTextLogin=0x7f0b004a;
-        public static final int editTextPassword=0x7f0b004b;
+        public static final int editTextLogin=0x7f0b004b;
+        public static final int editTextPassword=0x7f0b004c;
         public static final int editTextRouterIP=0x7f0b0044;
         public static final int edit_query=0x7f0b0030;
         public static final int end=0x7f0b0010;
@@ -888,6 +888,7 @@ containing a value of this type.
         public static final int textViewHello=0x7f0b003d;
         public static final int textViewIP=0x7f0b0047;
         public static final int textViewState=0x7f0b003f;
+        public static final int textViewState2=0x7f0b004a;
         public static final int textViewWIFILog=0x7f0b0041;
         public static final int title=0x7f0b002b;
         public static final int top_action_bar=0x7f0b0020;

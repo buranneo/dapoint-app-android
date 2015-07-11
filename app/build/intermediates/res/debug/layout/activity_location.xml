@@ -146,4 +146,14 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="n/a"
+        android:id="@+id/textViewState2"
+        android:layout_below="@+id/buttonDa"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout><!-- From: file:/C:/Users/burangulov/AndroidStudioProjects/DaPoint/app/src/main/res/layout/activity_location.xml -->
