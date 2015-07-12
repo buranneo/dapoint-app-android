@@ -103,7 +103,7 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/editTextBeaconFreq"
-        android:text="1500"
+        android:text="100"
         android:layout_above="@+id/buttonSettingsResetFields"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -155,5 +155,71 @@
         android:layout_below="@+id/buttonDa"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="n/a"
+        android:onClick="setRealStateNA"
+        android:id="@+id/buttonRealStateNA"
+        android:layout_above="@+id/textView1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:onClick="setRealState0"
+        android:id="@+id/buttonRealState0"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:onClick="setRealState1"
+        android:id="@+id/buttonRealState1"
+        android:layout_below="@+id/buttonRealState0"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2"
+        android:onClick="setRealState2"
+        android:id="@+id/buttonRealState2"
+        android:layout_below="@+id/buttonRealState1"
+        android:layout_alignRight="@+id/buttonRealState1"
+        android:layout_alignEnd="@+id/buttonRealState1" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3"
+        android:onClick="setRealState3"
+        android:id="@+id/buttonRealState3"
+        android:layout_below="@+id/buttonRealState2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="real state: n/a"
+        android:id="@+id/textViewRealState"
+        android:layout_below="@+id/textViewState2"
+        android:layout_alignRight="@+id/buttonChangeState"
+        android:layout_alignEnd="@+id/buttonChangeState" />
 
 </RelativeLayout><!-- From: file:/C:/Users/burangulov/AndroidStudioProjects/DaPoint/app/src/main/res/layout/activity_location.xml -->

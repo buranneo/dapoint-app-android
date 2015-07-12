@@ -246,7 +246,7 @@ int id action_context_bar 0x7f0b001d
 int id action_menu_divider 0x7f0b0001
 int id action_menu_presenter 0x7f0b0002
 int id action_mode_close_button 0x7f0b0024
-int id action_settings 0x7f0b004e
+int id action_settings 0x7f0b0054
 int id activity_chooser_view_content 0x7f0b0025
 int id always 0x7f0b0013
 int id beginning 0x7f0b000f
@@ -254,7 +254,12 @@ int id button1 0x7f0b0043
 int id buttonChangeState 0x7f0b0040
 int id buttonConnect 0x7f0b0042
 int id buttonDa 0x7f0b003c
-int id buttonLogin 0x7f0b004d
+int id buttonLogin 0x7f0b0053
+int id buttonRealState0 0x7f0b004c
+int id buttonRealState1 0x7f0b004d
+int id buttonRealState2 0x7f0b004e
+int id buttonRealState3 0x7f0b004f
+int id buttonRealStateNA 0x7f0b004b
 int id buttonSaveSettings 0x7f0b0049
 int id buttonSettingsResetFields 0x7f0b0046
 int id checkbox 0x7f0b002d
@@ -264,8 +269,8 @@ int id dialog 0x7f0b0018
 int id disableHome 0x7f0b0009
 int id dropdown 0x7f0b0019
 int id editTextBeaconFreq 0x7f0b0045
-int id editTextLogin 0x7f0b004b
-int id editTextPassword 0x7f0b004c
+int id editTextLogin 0x7f0b0051
+int id editTextPassword 0x7f0b0052
 int id editTextRouterIP 0x7f0b0044
 int id edit_query 0x7f0b0030
 int id end 0x7f0b0010
@@ -306,6 +311,7 @@ int id textView1 0x7f0b003e
 int id textViewBeaconFreq 0x7f0b0048
 int id textViewHello 0x7f0b003d
 int id textViewIP 0x7f0b0047
+int id textViewRealState 0x7f0b0050
 int id textViewState 0x7f0b003f
 int id textViewState2 0x7f0b004a
 int id textViewWIFILog 0x7f0b0041

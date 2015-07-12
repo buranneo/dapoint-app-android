@@ -34,6 +34,7 @@ public class LocationActivity extends Activity {
 	TextView tvLog;
 	TextView tvState;
 	TextView tvState2;
+	TextView tvRealState;
 	SharedPreferences sPref;
 	Button daButton;
 	Button changeButton;
@@ -41,6 +42,11 @@ public class LocationActivity extends Activity {
 	EditText settingsEditTextBeaconFreq;
 	Button settingsButtonSaveSettings;
 	Button settingsButtonSettingsResetFields;
+	Button setButtonRealStateNA;
+	Button setButtonRealState0;
+	Button setButtonRealState1;
+	Button setButtonRealState2;
+	Button setButtonRealState3;
 
 	Handler handler = new Handler();
 
@@ -54,6 +60,7 @@ public class LocationActivity extends Activity {
 	int curRSSI;
 	String myMAC;
 	String myIP;
+	String realState;
 
 	String routerIP;
 	int beaconFreq;
@@ -95,8 +102,16 @@ public class LocationActivity extends Activity {
 			}
 		});
 
+		setButtonRealStateNA = (Button) findViewById(R.id.buttonRealStateNA);
+		setButtonRealState0 = (Button) findViewById(R.id.buttonRealState0);
+		setButtonRealState1 = (Button) findViewById(R.id.buttonRealState1);
+		setButtonRealState2 = (Button) findViewById(R.id.buttonRealState2);
+		setButtonRealState3 = (Button) findViewById(R.id.buttonRealState3);
+		tvRealState = (TextView) findViewById(R.id.textViewRealState);
+
 		checkStateFreq = 2000;
 		resp2 = "n/a";
+		realState = "n/a";
 
 		settingsUpdate();
 
@@ -117,6 +132,10 @@ public class LocationActivity extends Activity {
 		if (beaconSender != null) {
 			beaconSender.interrupt();
 			beaconSender = null;
+		}
+		if (stateChecker != null) {
+			stateChecker.interrupt();
+			stateChecker = null;
 		}
 	}
 
@@ -147,7 +166,11 @@ public class LocationActivity extends Activity {
 					while (!isInterrupted()) {
 						Thread.sleep(checkStateFreq);
 						echo("check state");
-						sendRequest("state?mac=" + myMAC);
+						if (realState.equals("n/a")) {
+							sendRequest("state?mac=" + myMAC);
+						} else {
+							sendRequest("state?mac=" + myMAC + "&real=" + realState);
+						}
 						handler.post(new Runnable(){
 							public void run() {
 								tvState2.setText(resp2);
@@ -298,6 +321,27 @@ public class LocationActivity extends Activity {
 			echo("exception");
 		}
 
+	}
+
+	public void setRealStateNA(View v) {
+		realState = "n/a";
+		tvRealState.setText("real state: n/a");
+	}
+	public void setRealState0(View v) {
+		realState = "0";
+		tvRealState.setText("real state: 0");
+	}
+	public void setRealState1(View v) {
+		realState = "1";
+		tvRealState.setText("real state: 1");
+	}
+	public void setRealState2(View v) {
+		realState = "2";
+		tvRealState.setText("real state: 2");
+	}
+	public void setRealState3(View v) {
+		realState = "3";
+		tvRealState.setText("real state: 3");
 	}
 
 	public void connectToDaPoint(View v) {
