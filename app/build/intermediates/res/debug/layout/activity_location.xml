@@ -73,18 +73,18 @@
         android:onClick="connectToDaPoint"
         android:text="connect"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/button1"
-        android:layout_alignEnd="@+id/button1" />
+        android:layout_alignRight="@+id/buttonToggle"
+        android:layout_alignEnd="@+id/buttonToggle" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/buttonToggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="switchLed"
-        android:text="led"
-        android:layout_below="@+id/textViewWIFILog"
-        android:layout_alignRight="@+id/textViewState"
-        android:layout_alignEnd="@+id/textViewState" />
+        android:onClick="toggleBarrier"
+        android:text="toggle"
+        android:layout_below="@+id/buttonConnect"
+        android:layout_alignRight="@+id/textView1"
+        android:layout_alignEnd="@+id/textView1" />
 
     <EditText
         android:layout_width="120dp"

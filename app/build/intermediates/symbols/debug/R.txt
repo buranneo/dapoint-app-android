@@ -250,7 +250,6 @@ int id action_settings 0x7f0b0054
 int id activity_chooser_view_content 0x7f0b0025
 int id always 0x7f0b0013
 int id beginning 0x7f0b000f
-int id button1 0x7f0b0043
 int id buttonChangeState 0x7f0b0040
 int id buttonConnect 0x7f0b0042
 int id buttonDa 0x7f0b003c
@@ -262,6 +261,7 @@ int id buttonRealState3 0x7f0b004f
 int id buttonRealStateNA 0x7f0b004b
 int id buttonSaveSettings 0x7f0b0049
 int id buttonSettingsResetFields 0x7f0b0046
+int id buttonToggle 0x7f0b0043
 int id checkbox 0x7f0b002d
 int id collapseActionView 0x7f0b0014
 int id default_activity_button 0x7f0b0028

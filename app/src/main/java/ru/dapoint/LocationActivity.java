@@ -5,8 +5,11 @@ import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
@@ -37,6 +40,7 @@ public class LocationActivity extends Activity {
 	TextView tvRealState;
 	SharedPreferences sPref;
 	Button daButton;
+	Button toggleButton;
 	Button changeButton;
 	EditText settingsEditTextRouterIP;
 	EditText settingsEditTextBeaconFreq;
@@ -61,10 +65,14 @@ public class LocationActivity extends Activity {
 	String myMAC;
 	String myIP;
 	String realState;
+	String barrierState;
+	double positionValue;
+	double positionMargin;
 
 	String routerIP;
 	int beaconFreq;
 	int checkStateFreq;
+	long timeToWaitCloseBarrier;
 
 	private static final String TAG = "DaPoint";
 
@@ -83,6 +91,7 @@ public class LocationActivity extends Activity {
 		tvState = (TextView) findViewById(R.id.textViewState);
 		tvState2 = (TextView) findViewById(R.id.textViewState2);
 		daButton = (Button) findViewById(R.id.buttonDa);
+		toggleButton = (Button) findViewById(R.id.buttonToggle);
 		changeButton = (Button) findViewById(R.id.buttonChangeState);
 
 		settingsEditTextRouterIP = (EditText) findViewById(R.id.editTextRouterIP);
@@ -109,9 +118,13 @@ public class LocationActivity extends Activity {
 		setButtonRealState3 = (Button) findViewById(R.id.buttonRealState3);
 		tvRealState = (TextView) findViewById(R.id.textViewRealState);
 
-		checkStateFreq = 2000;
+		checkStateFreq = 500;
 		resp2 = "n/a";
 		realState = "n/a";
+		barrierState = "n/a";
+		positionValue = 0;
+		positionMargin = 0.5;
+		timeToWaitCloseBarrier = 3000;
 
 		settingsUpdate();
 
@@ -167,13 +180,28 @@ public class LocationActivity extends Activity {
 						Thread.sleep(checkStateFreq);
 						echo("check state");
 						if (realState.equals("n/a")) {
-							sendRequest("state?mac=" + myMAC);
+							sendRequest("state?mac=" + myMAC, "POST");
 						} else {
-							sendRequest("state?mac=" + myMAC + "&real=" + realState);
+							sendRequest("state?mac=" + myMAC + "&real=" + realState, "POST");
 						}
 						handler.post(new Runnable(){
 							public void run() {
-								tvState2.setText(resp2);
+								String ps, bs;
+								double t;
+								try {
+									JSONObject jObject = new JSONObject(resp2);
+									ps = jObject.getJSONObject("ps").getString("str");
+									positionValue = jObject.getJSONObject("ps").getDouble("val");
+									barrierState = jObject.getString("bs");
+									t = jObject.getDouble("t");
+								} catch (JSONException e) {
+									ps = resp2;
+									barrierState = "error";
+									t = 0;
+								}
+								tvState2.setText(ps);
+								setToggleColor();
+								positionCheck();
 							}
 						});
 					}
@@ -228,9 +256,14 @@ public class LocationActivity extends Activity {
 
 	class ReqSender implements Runnable {
 		private final String url;
+		private final String method;
 
-		public ReqSender(String url) {
+		public ReqSender(String url, String method) {
 			this.url = url;
+			this.method = method;
+		}
+		public ReqSender(String url) {
+			this(url, "GET");
 		}
 
 		public void run() {
@@ -238,38 +271,76 @@ public class LocationActivity extends Activity {
 			try {
 				//String url = String.format(pattern, routerIP, exe, comm);
 				HttpClient cl = new DefaultHttpClient();
-				HttpGet g = new HttpGet(url);
-				HttpResponse r = cl.execute(g);
-				resp = EntityUtils.toString(r.getEntity(), "UTF-8");
-				//resp = r.toString();
-				echo("got response: " + resp);
-				if (url.startsWith("http://" + routerIP + "/state")) {
-					resp2 = resp;
-					//tvState2.setText(resp);
+				if (this.method.equals("GET")) {
+					HttpGet g = new HttpGet(url);
+					HttpResponse r = cl.execute(g);
+					resp = EntityUtils.toString(r.getEntity(), "UTF-8");
+				} else {
+					HttpPost g = new HttpPost(url);
+					HttpResponse r = cl.execute(g);
+					if (url.startsWith("http://" + routerIP + "/state")) {
+						resp2 = EntityUtils.toString(r.getEntity(), "UTF-8");
+					}
+					resp = EntityUtils.toString(r.getEntity(), "UTF-8");
 				}
+				echo("got response: " + resp);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
+	public void sendRequest(String path, String method) {
+		new Thread(new ReqSender("http://" + routerIP + "/" + path, method)).start();
+	}
+
 	public void sendRequest(String path) {
-		new Thread(new ReqSender("http://" + routerIP + "/" + path)).start();
+		sendRequest(path, "GET");
 	}
 
-	public void sendRequest(String exe, String comm) {
-		sendRequest("/" + exe + "/" + comm);
+	public void toggleBarrier(View v) {
+		echo("toggle barrier");
+		sendRequest("barrier/toggle", "POST");
 	}
 
-	public void switchLed(View v) {
-		echo("switch led");
-		sendRequest("barrier", "toggle");
-	}
+	class BarrierOpener implements Runnable {
+		private final long t;
 
+		public BarrierOpener(long time_to_wait) {
+			t = time_to_wait;
+		}
+
+		public void run() {
+			sendRequest("barrier/open", "POST");
+			try {
+				wait(t);
+			} catch (Exception e) {
+				echo("Rise exception on close barrier");
+			}
+			sendRequest("barrier/close", "POST");
+		}
+	}
 	public void daClick(View v) {
 		echo("daClick");
-		//new Thread(new ReqSender("led", "toggle")).start();
-		sendRequest("barrier", "toggle");
+		new Thread(new BarrierOpener(timeToWaitCloseBarrier)).start();
+	}
+
+	public void setToggleColor() {
+		if (barrierState.equals("open")) {
+			toggleButton.setBackgroundColor(Color.parseColor("#55FF55"));
+		} else if (barrierState.equals("close")) {
+			toggleButton.setBackgroundColor(Color.parseColor("#FFDDDD"));
+		} else {
+			toggleButton.setBackgroundColor(Color.parseColor("#DDDDDD"));
+		}
+	}
+
+	public void positionCheck() {
+		if (positionValue > positionMargin) {
+			setState(LocationState.S_READY);
+		} else if (positionValue < -positionMargin) {
+			setState(LocationState.S_CONNECTED);
+		}
 	}
 
 	public enum LocationState {
@@ -282,7 +353,7 @@ public class LocationActivity extends Activity {
 			locState = s;
 			switch (s) {
 				case S_CONNECTED:
-					sendRequest("set_user", loginName);
+					sendRequest("set_user" + loginName);
 					daButton.setEnabled(false);
 					daButton.setBackgroundColor(Color.parseColor("#FFDDDD"));
 					tvState.setText("Connected");

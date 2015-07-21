@@ -831,7 +831,6 @@ containing a value of this type.
         public static final int activity_chooser_view_content=0x7f0b0025;
         public static final int always=0x7f0b0013;
         public static final int beginning=0x7f0b000f;
-        public static final int button1=0x7f0b0043;
         public static final int buttonChangeState=0x7f0b0040;
         public static final int buttonConnect=0x7f0b0042;
         public static final int buttonDa=0x7f0b003c;
@@ -843,6 +842,7 @@ containing a value of this type.
         public static final int buttonRealStateNA=0x7f0b004b;
         public static final int buttonSaveSettings=0x7f0b0049;
         public static final int buttonSettingsResetFields=0x7f0b0046;
+        public static final int buttonToggle=0x7f0b0043;
         public static final int checkbox=0x7f0b002d;
         public static final int collapseActionView=0x7f0b0014;
         public static final int default_activity_button=0x7f0b0028;
